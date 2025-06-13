@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cuestionario: Historia de Roma</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Times+New+Roman&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div id="quiz-container" class="roman-container bg-stone-100 rounded-lg text-center text-stone-800">
+
+        <!-- Pantalla de Inicio -->
+        <div id="start-screen" class="screen active">
+            <div class="screen-content items-center">
+                <svg class="w-24 h-24 mx-auto mb-4 text-amber-700 shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 21v-8.25M15.75 21v-8.25M8.25 21v-8.25M3 9l9-6 9 6m-1.5 12V10.332A48.36 48.36 0 0012 9.75c-2.551 0-5.056.2-7.5.582V21M3 21h18M12 6.75h.008v.008H12V6.75z" />
+                </svg>
+                <h1 class="text-4xl md:text-5xl font-bold text-amber-800 mb-8 tracking-wider">Desde su fundación hasta los idus de marzo</h1>
+                <div class="flex flex-col sm:flex-row gap-4 mb-8 w-full max-w-sm">
+                    <button id="start-button" class="roman-button text-xl font-bold py-3 px-8 rounded-md w-full">Comenzar Cuestionario</button>
+                </div>
+                <p class="text-xs text-stone-500 px-4 italic mt-auto">Cuestionario creado por Cristian Diego Gongora Pabon para la materia de Lengua y literatura latina I de la cátedra de Liliana Pégolo en base al texto: “Breve recorrido procesual desde su fundación hasta los idus de marzo (753 a. C. – 44 a.C.)” de Pégolo, L. y Sacerdote, A. (2020).</p>
+            </div>
+        </div>
+
+        <!-- Pantalla del Cuestionario -->
+        <div id="question-screen" class="screen">
+            <div class="screen-content w-full">
+                <div class="flex-shrink-0">
+                    <div class="flex justify-between items-center mb-4">
+                        <button id="back-from-quiz-button" class="roman-button-secondary text-lg py-1 px-4 rounded-md">Volver</button>
+                        <div id="score-tracker" class="text-lg font-bold text-stone-600 transition-colors duration-500 flex items-center gap-4">
+                            <div class="flex items-center gap-1">
+                                <svg class="w-6 h-6 text-green-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                <span class="hidden md:inline">Correctas:</span>
+                                <span id="correct-count">0</span>
+                            </div>
+                            <div class="flex items-center gap-1">
+                                <svg class="w-6 h-6 text-red-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                <span class="hidden md:inline">Incorrectas:</span>
+                                <span id="incorrect-count">0</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="progress-bar" class="w-full bg-stone-300 rounded-full h-4 mb-2 border border-stone-400">
+                        <div id="progress-bar-inner" class="bg-amber-600 h-full rounded-full transition-all duration-300"></div>
+                    </div>
+                </div>
+                <div class="flex-grow flex flex-col justify-center">
+                    <h2 id="question-text" class="text-2xl md:text-3xl font-bold my-8 min-h-[100px] flex items-center justify-center"></h2>
+                    <div id="answer-options" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pantalla de Resultados -->
+        <div id="result-screen" class="screen">
+            <div class="screen-content items-center">
+                <h1 class="text-4xl md:text-5xl font-bold text-amber-800 mb-4">Cuestionario Finalizado</h1>
+                <svg class="w-24 h-24 mx-auto my-6 text-amber-700" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                    <path fill="currentColor" d="M256 32c5.5 0 10.6.2 15.6.6c8.5.6 16.2 2.3 22.8 5.2c1.9.8 3.7 1.7 5.5 2.6c11.3 6.5 20.9 15.3 27.5 26.5c4.7 8 8.1 16.8 9.8 25.8c.8 4.2 1.5 8.5 1.9 12.8C340.8 111.4 344 118.6 344 126.4c0 10-5.7 19-14.1 23.3c-12.2 6.3-26.9 8.2-40.8 7.3c-15.1-.9-30.8-5-44.9-12.3c-14.2-7.4-26.6-17.8-36.8-29.7c-3.2-3.7-8.9-4.2-12.6-1c-3.7 3.2-4.2 8.9-1 12.6c11.3 13.1 25.2 24.7 41.2 33c16.9 8.8 35.8 13.2 54 14.1c22.5 1.1 46-2.1 66.8-10.1c25.4-9.8 45.2-25.5 56.9-46.7c9.5-17.2 14.3-36.4 14.3-56.4c0-21.7-5.9-42.6-17.2-61.2C407.2 53.9 388.7 38.6 367.6 28.3C340.3 15.9 308.8 8 275.6 8C270.2 8 264.9 8.2 259.7 8.5c-15.2.8-30.1 2.8-44.4 6.2c-1.1.2-2.1.5-3.2.8c-12.7 3.8-24.3 9.7-34.1 17.5c-9.2 7.2-17.2 15.8-23.7 25.6c-4.2 6.3-7.6 13.1-10.2 20.1c-1.3 3.6-4.5 6.2-8.2 6.2c-4.9 0-8.8-3.9-8.8-8.8c0-3.3 1.9-6.3 4.7-7.9c4.3-2.5 8.8-4.8 13.3-7.1c11.3-5.7 23.6-10 36.4-12.8c12.9-2.8 26.2-4.4 39.7-4.8C240.2 32.1 248.1 32 256 32zM32 224c0-17.7 14.3-32 32-32H448c17.7 0 32 14.3 32 32s-14.3 32-32 32H64c-17.7 0-32-14.3-32-32zm448 96H64c-17.7 0-32 14.3-32 32s14.3 32 32 32H480c17.7 0 32-14.3 32-32s-14.3-32-32-32z" />
+                </svg>
+                <p id="final-score-details" class="text-2xl mb-2"></p>
+                <p id="score-text" class="text-3xl mb-4"></p>
+                <p id="score-message" class="text-xl text-stone-600 mb-8"></p>
+                <div class="flex flex-col sm:flex-row gap-4 w-full max-w-md">
+                    <button id="restart-button" class="roman-button text-xl font-bold py-3 px-8 rounded-md w-full">Volver a Jugar</button>
+                    <button id="home-button" class="roman-button text-xl font-bold py-3 px-8 rounded-md w-full">Volver al Inicio</button>
+                </div>
+                <button id="share-button" class="roman-button text-xl font-bold py-3 px-8 rounded-md mt-4 w-full max-w-md">Pedir Certificado</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para Compartir -->
+    <div id="share-modal" class="hidden fixed inset-0 bg-black bg-opacity-60 flex justify-center items-center p-4 z-50">
+        <div class="bg-stone-100 rounded-lg p-8 max-w-lg w-full text-center relative roman-container" style="min-height: auto;">
+            <button id="close-modal-button" class="absolute top-2 right-4 text-3xl text-stone-600 hover:text-amber-700">&times;</button>
+            <h2 class="text-3xl font-bold text-amber-800 mb-4">Tu Certificado</h2>
+            <div id="share-step-1">
+                <label for="share-name-input" class="block mb-2 text-xl text-stone-700">Ingresa tu nombre para el certificado</label>
+                <input type="text" id="share-name-input" placeholder="Tu nombre aquí" class="w-full text-xl text-center p-2 rounded-md mb-4" style="font-family: 'Times New Roman', serif;">
+                <button id="generate-image-button" class="roman-button text-xl font-bold py-2 px-6 rounded-md">Generar Imagen</button>
+            </div>
+            <div id="share-step-2" class="hidden">
+                <p class="text-lg text-stone-700 mb-4">¡Certificado generado!</p>
+                <div id="image-container" class="mb-4 p-2 border-2 border-dashed border-amber-700"></div>
+                <p class="text-sm text-stone-600 mb-4">Haz clic derecho o mantén pulsada la imagen para guardarla.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Elemento oculto para generar el certificado -->
+    <div id="certificate" class="hidden fixed -left-full top-0" style="width: 800px; padding: 40px; background-color: #fefce8; border: 10px solid #b45309; font-family: 'Cinzel', serif; color: #92400e;">
+        <h1 id="cert-title" style="font-size: 38px; font-weight: 700; text-align: center; margin-bottom: 30px;">Desde su fundación hasta los idus de marzo</h1>
+        <p id="cert-name" style="font-size: 48px; text-align: center; margin-bottom: 30px; color: #3f3f46;"></p>
+        <p id="cert-score" style="font-size: 60px; font-weight: 700; text-align: center; margin-bottom: 40px;"></p>
+        <p id="cert-disclaimer" style="font-family: 'Times New Roman', serif; font-size: 14px; text-align: center; font-style: italic; color: #78716c;">Cuestionario creado por Cristian Diego Gongora Pabon para la materia de Lengua y literatura latina I de la cátedra de Liliana Pégolo en base al texto: “Breve recorrido procesual desde su fundación hasta los idus de marzo (753 a. C. – 44 a.C.)” de Pégolo, L. y Sacerdote, A. (2020).</p>
+    </div>
+    <script src="questionBank.js"></script>
+    <script src="app.js"></script>
+</body>
+
+</html>
